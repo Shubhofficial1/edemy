@@ -2,8 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import authRoute from "./routes/authRoute.js";
+import connectDB from "./config/db.js";
+import colors from "colors";
 
 dotenv.config();
+connectDB();
 
 const app = express();
 

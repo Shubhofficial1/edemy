@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -8,13 +9,18 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.table({ name, email, password });
-    const { data } = await axios.post("/api/register", {
-      name,
-      email,
-      password,
-    });
-    console.log("API RESPONSE : ", data);
+    try {
+      const { data } = await axios.post("/api/register", {
+        name,
+        email,
+        password,
+      });
+      console.log("API RESPONSE : ", data);
+      toast.success("Registration Successful. Please Login");
+    } catch (err) {
+      toast.error(err.response.data);
+    }
+
     setName("");
     setEmail("");
     setPassword("");
@@ -43,7 +49,13 @@ const Register = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type={"submit"}> Submit </button>
+          <button disabled={!name || !email || !password} type={"submit"}>
+            {" "}
+            Submit{" "}
+          </button>
+          <p style={{ marginTop: "20px" }}>
+            Already Registered? <Link to={"/login"}>Login </Link>
+          </p>
         </form>
       </div>
     </>
